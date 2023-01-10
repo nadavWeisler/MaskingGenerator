@@ -73,11 +73,9 @@
             for (let i = 0; i < n; i++) {
                 mondrian = CreateMondrian("mondrian" + i, 'mondrians',
                     frameWidth, frameHeight);
+                mondrian_list.push(mondrian);
                 let ctx = CreateMondrianContext(mondrian,
                     frameWidth, frameHeight);
-
-                mondrian_list.push(mondrian);
-
                 // Fill rect
                 FillRectangles(rectNum, ctx, colorOpts,
                     rectangleWidth, rectangleHeight, frameWidth, frameHeight);
@@ -87,16 +85,15 @@
 
         //Download Mondrians
         function downloadMondrians(frameWidth, frameHeight, rectNum, n, colors, rectangleWidth, rectangleHeight) {
-            let lst = getMondriansList(n, rectNum, colors, frameWidth, frameHeight, rectangleWidth, rectangleHeight);
-            for (let i = 0; i < n; i++) {
-                downloadCanvas("mondrian" + i + ".png", lst[i]);
-            }
+            getMondriansList(n, rectNum, colors, frameWidth, frameHeight, rectangleWidth, rectangleHeight).forEach(function(item, index) {
+                downloadCanvas("mondrian" + index + ".png", item);
+            });
         }
 
         //Download Mondrians Event (For HTML form)
         function downloadMondriansEvent() {
             downloadMondrians(
-                parseInt(document.getElementById('frameWidth').value),
+                1,
                 parseInt(document.getElementById('frameHeight').value),
                 parseInt(document.getElementById('rectangleCount').value),
                 parseInt(document.getElementById('mondiransCount').value), ['#FF0000', '#00FF00', '#0000FF',
@@ -115,14 +112,15 @@
         <h1>Mondrian Generator</h1>
 
         <form action="/">
-            <input type="number" name="mondiransCount" id="mondiransCount" placeholder="Number of Mondrians" required/>
+            <!-- <input type="number" name="mondiransCount" id="mondiransCount" placeholder="Number of Images" required/> -->
             <input type="number" name="rectangleCount" id="rectangleCount" placeholder="Number of Rectangles" required/>
-            <input type="number" name="frameWidth" id="frameWidth" placeholder="Frame Width" required/>
-            <input type="number" name="frameHeight" id="frameHeight" placeholder="Frame Height" required/>
-            <input type="number" name="rectangleWidth" id="rectangleWidth" placeholder="Pectangle Width" required/>
-            <input type="number" name="rectangleHeight" id="rectangleHeight" placeholder="Pectangle Height" required/>
-
-            <a href="#" onclick="downloadMondriansEvent()" class="button">Register</a>
+            <input type="number" name="frameWidth" id="frameWidth" placeholder="Frame Width (px)" required/>
+            <input type="number" name="frameHeight" id="frameHeight" placeholder="Frame Height (px)" required/>
+            <input type="number" name="rectangleWidth" id="rectangleWidth" placeholder="Pectangle Width (px)" required/>
+            <input type="number" name="rectangleHeight" id="rectangleHeight" placeholder="Pectangle Height (px)" required/>
+            <div>
+                <a href="#" onclick="downloadMondriansEvent()" class="button">Submit</a>
+            </div>
         </form>
     </div>
 </body>
