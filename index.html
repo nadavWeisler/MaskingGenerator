@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" style="background: #C0C0C0;height: 100%;">
+
+<head>
+    <title>Mondrian Generator</title>
+    <script src="libs/jquery-min.js" type="text/javascript"></script>
+    <script src="libs/underscore-min.js" type="text/javascript"></script>
+    <meta charset="UTF-8" />>
+    <link rel="stylesheet" href="./index.css" />
+    <script>
+        //Download Canvas
+        function downloadCanvas(filename, canvas) {
+            let element = document.createElement('a');
+            element.setAttribute('href', canvas.toDataURL('image/png'));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        };
+
+        //Create Mondrian Canvas
+        function CreateMondrian(_id, _className, _width, _height) {
+            let mondrian = document.createElement('canvas');
+            mondrian.id = _id;
+            mondrian.className = _className;
+            mondrian.width = _width;
+            mondrian.height = _height;
+            mondrian.style.opacity = 1
+            return mondrian;
+        }
+
+        //Get all rectangle ranges
+        function GetRectanglesRange(_rectangle_Width, _rectangle_height, _frameWidth, _frameHeight) {
+            return [-_rectangle_Width, -_rectangle_height,
+                _frameWidth + _rectangle_Width,
+                _frameHeight + _rectangle_height
+            ];
+        }
+
+        //Fill Mondrian
+        function FillRectangles(_rectNum, _mondrianContext, _colors, _rectangle_Width,
+            _rectangle_Height,
+            _frameWidth, _frameHeight) {
+            const rectRange = GetRectanglesRange(_rectangle_Width, _rectangle_Height, _frameWidth,
+                _frameHeight);
+            for (let j = 0; j < _rectNum; j++) {
+                _mondrianContext.fillStyle = _colors[Math.floor(Math.random() * _colors.length)];
+                _mondrianContext.fillRect(Math.round(Math.random() *
+                        (rectRange[2] - rectRange[0]) + rectRange[0]),
+                    Math.round(Math.random() * (rectRange[3] - rectRange[1]) + rectRange[1]),
+                    _rectangle_Width + Math.round(Math.random()) * _rectangle_Width,
+                    _rectangle_Height + Math.round(Math.random()) * _rectangle_Height);
+            }
+        }
+
+        //Draw Mondrian
+        function CreateMondrianContext(_mondrian, _frameWidth,
+            _frameHeight) {
+            let ctx = _mondrian.getContext("2d");
+            ctx.fillStyle = "darkgray";
+            ctx.fillRect(0, 0, _frameWidth, _frameHeight);
+            return ctx;
+        }
+
+        //Get Mondrians List
+        function getMondriansList(n, rectNum, colorOpts, frameWidth, frameHeight, rectangleWidth, rectangleHeight) {
+            let mondrian = [];
+            let mondrian_list = [];
+            for (let i = 0; i < n; i++) {
+                mondrian = CreateMondrian("mondrian" + i, 'mondrians',
+                    frameWidth, frameHeight);
+                let ctx = CreateMondrianContext(mondrian,
+                    frameWidth, frameHeight);
+
+                mondrian_list.push(mondrian);
+
+                // Fill rect
+                FillRectangles(rectNum, ctx, colorOpts,
+                    rectangleWidth, rectangleHeight, frameWidth, frameHeight);
+            }
+            return mondrian_list;
+        }
+
+        //Download Mondrians
+        function downloadMondrians(frameWidth, frameHeight, rectNum, n, colors, rectangleWidth, rectangleHeight) {
+            let lst = getMondriansList(n, rectNum, colors, frameWidth, frameHeight, rectangleWidth, rectangleHeight);
+            for (let i = 0; i < n; i++) {
+                downloadCanvas("mondrian" + i + ".png", lst[i]);
+            }
+        }
+
+        //Download Mondrians Event (For HTML form)
+        function downloadMondriansEvent() {
+            downloadMondrians(
+                parseInt(document.getElementById('frameWidth').value),
+                parseInt(document.getElementById('frameHeight').value),
+                parseInt(document.getElementById('rectangleCount').value),
+                parseInt(document.getElementById('mondiransCount').value), ['#FF0000', '#00FF00', '#0000FF',
+                    '#FFFF00', '#FF00FF', '#00FFFF'
+                ],
+                parseInt(document.getElementById('rectangleWidth').value),
+                parseInt(document.getElementById('rectangleHeight').value)
+            );
+        }
+    </script>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+    <div class="testbox">
+        <h1>Mondrian Generator</h1>
+
+        <form action="/">
+            <input type="number" name="mondiransCount" id="mondiransCount" placeholder="Number of Mondrians" required/>
+            <input type="number" name="rectangleCount" id="rectangleCount" placeholder="Number of Rectangles" required/>
+            <input type="number" name="frameWidth" id="frameWidth" placeholder="Frame Width" required/>
+            <input type="number" name="frameHeight" id="frameHeight" placeholder="Frame Height" required/>
+            <input type="number" name="rectangleWidth" id="rectangleWidth" placeholder="Pectangle Width" required/>
+            <input type="number" name="rectangleHeight" id="rectangleHeight" placeholder="Pectangle Height" required/>
+
+            <a href="#" onclick="downloadMondriansEvent()" class="button">Register</a>
+        </form>
+    </div>
+</body>
+
+</html>
