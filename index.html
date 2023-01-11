@@ -93,10 +93,10 @@
         //Download Mondrians Event (For HTML form)
         function downloadMondriansEvent() {
             downloadMondrians(
-                1,
+                parseInt(document.getElementById('frameWidth').value),
                 parseInt(document.getElementById('frameHeight').value),
                 parseInt(document.getElementById('rectangleCount').value),
-                parseInt(document.getElementById('mondiransCount').value), ['#FF0000', '#00FF00', '#0000FF',
+                1, ['#FF0000', '#00FF00', '#0000FF',
                     '#FFFF00', '#FF00FF', '#00FFFF'
                 ],
                 parseInt(document.getElementById('rectangleWidth').value),
@@ -119,7 +119,7 @@
             <input type="number" name="rectangleWidth" id="rectangleWidth" placeholder="Pectangle Width (px)" required/>
             <input type="number" name="rectangleHeight" id="rectangleHeight" placeholder="Pectangle Height (px)" required/>
             <div>
-                <a href="#" onclick="downloadMondriansEvent()" class="button">Submit</a>
+                <a href="" onclick="downloadMondriansEvent()" class="button">Submit</a>
             </div>
         </form>
     </div>
