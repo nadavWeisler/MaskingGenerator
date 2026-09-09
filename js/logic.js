@@ -124,6 +124,10 @@ function resolveSeed(raw) {
     return { seed: n, sampled: false };
 }
 
+function shapeFitsFrame(shapeWidthPx, shapeHeightPx, frameWidthPx, frameHeightPx) {
+    return shapeWidthPx <= frameWidthPx && shapeHeightPx <= frameHeightPx;
+}
+
 function readShapeSizes(shapeType, errors) {
     const widthEl = document.getElementById('shapeWidth');
     const heightEl = document.getElementById('shapeHeight');
@@ -179,6 +183,15 @@ function validateAndGenerate() {
     const sizes = shapeType
         ? readShapeSizes(shapeType, errors)
         : { shapeWidthPx: NaN, shapeHeightPx: NaN };
+    if (
+        Number.isFinite(sizes.shapeWidthPx) &&
+        Number.isFinite(sizes.shapeHeightPx) &&
+        Number.isFinite(frameWidthPx) &&
+        Number.isFinite(frameHeightPx) &&
+        !shapeFitsFrame(sizes.shapeWidthPx, sizes.shapeHeightPx, frameWidthPx, frameHeightPx)
+    ) {
+        errors.push('Shape must fit the frame.');
+    }
     const seedResult = resolveSeed(form.seed.value);
 
     if (seedResult.error) {
