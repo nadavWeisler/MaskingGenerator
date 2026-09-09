@@ -159,14 +159,46 @@ function buildParams(seed, shapeType, frameCount, shapeCount, frameWidthPx, fram
     };
 }
 
+let previewPack = null;
+
 function showParams(params) {
     const readout = document.getElementById('paramsReadout');
-    if (readout) {
-        readout.textContent = JSON.stringify(params, null, 2);
+    if (!readout) {
+        return;
+    }
+    readout.textContent = params ? JSON.stringify(params, null, 2) : '';
+}
+
+function setDownloadEnabled(enabled) {
+    const downloadButton = document.getElementById('downloadZip');
+    if (downloadButton) {
+        downloadButton.disabled = !enabled;
     }
 }
 
-function validateAndGenerate() {
+function clearPreviewAndPack() {
+    const preview = document.getElementById('preview');
+    if (preview) {
+        preview.innerHTML = '';
+    }
+    previewPack = null;
+    setDownloadEnabled(false);
+}
+
+function snapshotPreviewPack(params) {
+    const preview = document.getElementById('preview');
+    const canvases = preview ? preview.querySelectorAll('canvas') : [];
+    const pngs = [];
+    for (let j = 0; j < canvases.length; j++) {
+        pngs.push(canvases[j].toDataURL('image/png').split('base64,')[1]);
+    }
+    previewPack = {
+        pngs: pngs,
+        paramsJson: JSON.stringify(params, null, 2)
+    };
+}
+
+function generateFrames() {
     const form = document.getElementById('shapeForm');
     const errorBox = document.getElementById('errorMessages');
     errorBox.textContent = '';
@@ -200,6 +232,8 @@ function validateAndGenerate() {
 
     if (errors.length) {
         errorBox.textContent = errors.join(' ');
+        clearPreviewAndPack();
+        showParams(null);
         return;
     }
 
@@ -217,10 +251,10 @@ function validateAndGenerate() {
         sizes.shapeHeightPx
     );
     showParams(params);
+    clearPreviewAndPack();
 
+    const preview = document.getElementById('preview');
     const rng = createRng(seed);
-    const zip = new JSZip();
-    const folder = zip.folder('shapes');
 
     for (let j = 0; j < frameCount; j++) {
         const canvas = createShapeCanvas('shapeCanvas' + j, 'shapes', frameWidthPx, frameHeightPx);
@@ -238,12 +272,23 @@ function validateAndGenerate() {
             sizes.shapeHeightPx,
             rng
         );
-        const canvasDataUrl = canvas.toDataURL('image/png');
-        folder.file('mask' + j + '.png', canvasDataUrl.split('base64,')[1], { base64: true });
+        preview.appendChild(canvas);
     }
 
-    folder.file('params.json', JSON.stringify(params, null, 2));
+    snapshotPreviewPack(params);
+    setDownloadEnabled(true);
+}
 
+function downloadPackedZip() {
+    if (!previewPack) {
+        return;
+    }
+    const zip = new JSZip();
+    const folder = zip.folder('shapes');
+    for (let j = 0; j < previewPack.pngs.length; j++) {
+        folder.file('mask' + j + '.png', previewPack.pngs[j], { base64: true });
+    }
+    folder.file('params.json', previewPack.paramsJson);
     zip.generateAsync({ type: 'blob' }).then(function (content) {
         const downloadLink = document.createElement('a');
         downloadLink.href = URL.createObjectURL(content);

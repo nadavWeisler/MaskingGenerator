@@ -35,9 +35,11 @@
             <input type="number" name="seed" id="seed" min="0" max="4294967295" step="1" placeholder="Blank samples once and records it">
             <div id="shapeOptions"></div>
             <div id="errorMessages" class="error"></div>
+            <button type="button" class="button" onclick="generateFrames()">Generate</button>
+            <div id="preview"></div>
             <pre id="paramsReadout"></pre>
+            <button type="button" class="button" id="downloadZip" onclick="downloadPackedZip()" disabled>Download ZIP</button>
             <p>Cites: <a href="https://github.com/nadavWeisler/MaskingGenerator#related-work">README Related work</a></p>
-            <button type="button" class="button" onclick="validateAndGenerate()">Generate & Download</button>
         </form>
     </div>
     <script>
