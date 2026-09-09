@@ -1,42 +1,50 @@
-
 # MaskingGenerator
 
-MaskingGenerator is a web application that allows users to generate masked shapes (rectangle, circle, triangle) within specified frames. Users can customize various parameters such as shape type, dimensions, number of shapes, number of frames, and more.
+Browser page that bakes **geometric Mondrian-*like* mask frames** (random rectangles, circles, or triangles on a gray canvas) and downloads them as a ZIP of PNGs. Intended as a lightweight baker for **CFS / RMS-style** work, not as a stimulus-analysis or experiment-presentation tool.
 
-## Features
+That “Mondrian-*like*” wording is geometric resemblance only. CFS itself is [Tsuchiya & Koch, 2005](https://doi.org/10.1038/nn1500); controlled mask construction and analysis live in tools such as [CFS-crafter](https://doi.org/10.3758/s13428-022-01903-7) (Wang, Alais, Blake, & Han, 2022). This repo does not replace those sources.
 
-* Generate masked shapes (rectangle, circle, triangle) within frames.
-* Customize shape type, dimensions (in millimeters), number of shapes, and number of frames.
-* Download generated shapes as a zip file.
-* Modern and responsive design for a seamless user experience.
+Live page: https://nadavweisler.github.io/MaskingGenerator/
 
-## Technologies Used
+## What it does
 
-* HTML5
-* CSS3
-* JavaScript (ES6)
-* jQuery
-* JSZip Library
+* Pick one shape type (rectangle, circle, or triangle), a frame count, a shape count, and canvas / shape sizes.
+* Draw each frame by placing that many randomly positioned, randomly colored shapes on a dark-gray background.
+* Download the frames as `shapes.zip` (`mask0.png`, `mask1.png`, …).
+
+Sizes in the current UI are **canvas units**, not a research-grade size model. Do not treat them as millimetres, screen centimetres, or visual angle.
+
+## What it does not do
+
+* **No spectral control.** No spatial-, temporal-, or orientation-frequency design or filtering.
+* **No analysis.** No mask statistics, spectra, or comparison against other stimuli.
+* **No calibrated visual angle.** No viewing-distance, PPI, or display calibration.
+* **Not an experiment runner.** It does not present CFS/RMS trials, time masks at ~10 Hz, or log responses.
+* **Not a first / canonical Mondrian generator.** Earlier bakers exist (see [Related work](#related-work)).
+
+## Related work
+
+**Primary sources (cite these for the method and for controlled masks):**
+
+* Tsuchiya, N., & Koch, C. (2005). Continuous flash suppression reduces negative afterimages. *Nature Neuroscience, 8*(8), 1096–1101. https://doi.org/10.1038/nn1500
+* Wang, G., Alais, D., Blake, R., & Han, S. (2022). CFS-crafter: An open-source tool for creating and analyzing images for continuous flash suppression experiments. *Behavior Research Methods*. https://doi.org/10.3758/s13428-022-01903-7
+
+**Prior bakers (this page is another small one, not a replacement):**
+
+* [nadavWeisler/jsPsychRmsPlugin](https://github.com/nadavWeisler/jsPsychRmsPlugin) — jsPsych RMS/bRMS plugin with its own Mondrian-mask baker.
+* [ronenno1/masks4cfs](https://github.com/ronenno1/masks4cfs) — MATLAB script that writes triangle-based CFS mask PNGs.
 
 ## Usage
 
-1. Clone the repository to your local machine.
-2. Open the `index.html` file in your web browser.
-3. Choose the shape type, dimensions, number of shapes, number of frames, and other options as needed.
-4. Click on the "Generate & Download" button to download the generated shapes as a zip file.
+1. Clone the repository, or open the [live page](https://nadavweisler.github.io/MaskingGenerator/).
+2. Open `index.html` in a browser.
+3. Choose shape type, frame count, shape count, and sizes.
+4. Click **Generate & Download**.
 
-## Folder Structure
+## Stack
 
-* **css/** : Contains CSS stylesheets for styling the web application.
-* **js/** : Contains JavaScript files for interactive functionality.
-* **libs/** : Contains external libraries such as JSZip for generating zip files.
-* **index.html** : Main HTML file for the web application.
-* **README.md** : Documentation file (you are currently reading it).
-
-## Contributing
-
-Contributions are welcome! If you have any suggestions or improvements, please open an issue or create a pull request.
+HTML, CSS, JavaScript, jQuery, [JSZip](https://stuk.github.io/jszip/).
 
 ## License
 
-This project is licensed under the [MIT License]().
+[MIT](LICENSE). See [`CITATION.md`](CITATION.md) for how to cite this repo versus the primary CFS / CFS-crafter papers.
