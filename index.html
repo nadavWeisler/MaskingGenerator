@@ -27,89 +27,44 @@
             <input type="number" name="frameCount" id="frameCount" placeholder="Enter number" required>
             <label for="shapeCount">Number of Shapes:</label>
             <input type="number" name="shapeCount" id="shapeCount" placeholder="Enter number" required>
-            <label for="frameWidth">Frame Width (mm):</label>
+            <label for="frameWidth">Frame Width (px):</label>
             <input type="number" name="frameWidth" id="frameWidth" placeholder="Enter width" required>
-            <label for="frameHeight">Frame Height (mm):</label>
+            <label for="frameHeight">Frame Height (px):</label>
             <input type="number" name="frameHeight" id="frameHeight" placeholder="Enter height" required>
+            <label for="seed">Seed:</label>
+            <input type="number" name="seed" id="seed" min="0" max="4294967295" step="1" placeholder="Blank samples once and records it">
             <div id="shapeOptions"></div>
             <div id="errorMessages" class="error"></div>
+            <pre id="paramsReadout"></pre>
+            <p>Cites: <a href="https://github.com/nadavWeisler/MaskingGenerator#related-work">README Related work</a></p>
             <button type="button" class="button" onclick="validateAndGenerate()">Generate & Download</button>
         </form>
     </div>
     <script>
-        // Generate shapes and download zip file
-        function validateAndGenerate() {
-            const form = document.getElementById('shapeForm');
-            const shapeType = form.shapeType.value;
-            const shapeCount = parseInt(form.shapeCount.value);
-            const frameCount = parseInt(form.frameCount.value);
-            const mmToPx = 3.7795275590551; // Convert mm to px (1mm = 3.7795275590551px)
-            const frameWidth = parseFloat(form.frameWidth.value) * mmToPx;
-            const frameHeight = parseFloat(form.frameHeight.value) * mmToPx;
-            let shapeWidth = 0;
-            let shapeHeight = 0;
-
-            // Get shape dimensions based on shape type
-            if (shapeType === 'rectangle' || shapeType === 'triangle') {
-                shapeWidth = parseFloat(document.getElementById('shapeWidth').value) * mmToPx; // Convert mm to px
-                shapeHeight = parseFloat(document.getElementById('shapeHeight').value) * mmToPx; // Convert mm to px
-            } else if (shapeType === 'circle') {
-                const diameter = parseFloat(document.getElementById('shapeWidth').value);
-                const radius = diameter / 2;
-                shapeWidth = radius * 2 * mmToPx;
-                shapeHeight = radius * 2 * mmToPx;
-            }
-
-            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
-
-            const zip = new JSZip();
-            const folder = zip.folder('shapes');
-
-            for (let j = 0; j < frameCount; j++) {
-                const canvas = createShapeCanvas('shapeCanvas' + j, 'shapes', frameWidth, frameHeight);
-                const ctx = canvas.getContext('2d');
-                ctx.fillStyle = "darkgray";
-                ctx.fillRect(0, 0, frameWidth, frameHeight);
-                drawShapes(shapeType, shapeCount, ctx, colors, frameWidth, frameHeight, shapeWidth, shapeHeight);
-
-                const canvasDataUrl = canvas.toDataURL('image/png');
-                folder.file(`mask${j}.png`, canvasDataUrl.split('base64,')[1], { base64: true });
-            }
-
-            zip.generateAsync({ type: 'blob' }).then(function (content) {
-                // Create download link
-                const downloadLink = document.createElement('a');
-                downloadLink.href = URL.createObjectURL(content);
-                downloadLink.download = 'shapes.zip';
-                downloadLink.click();
-            });
-        }
-
-        // Update shape options based on selected shape type
         document.getElementById('shapeType').addEventListener('change', function () {
             const shapeType = this.value;
             const shapeOptionsDiv = document.getElementById('shapeOptions');
-            shapeOptionsDiv.innerHTML = ''; // Clear previous options
+            shapeOptionsDiv.innerHTML = '';
 
             if (shapeType === 'rectangle') {
                 shapeOptionsDiv.innerHTML = `
-                    <label for="shapeWidth">Rectangle Width (mm):</label>
+                    <label for="shapeWidth">Rectangle Width (px):</label>
                     <input type="number" name="shapeWidth" id="shapeWidth" placeholder="Enter width" required/>
                     <br>
-                    <label for="shapeHeight">Rectangle Height (mm):</label>
+                    <label for="shapeHeight">Rectangle Height (px):</label>
                     <input type="number" name="shapeHeight" id="shapeHeight" placeholder="Enter height" required/>
                 `;
             } else if (shapeType === 'circle') {
                 shapeOptionsDiv.innerHTML = `
-                    <label for="shapeWidth">Circle Diameter (mm):</label>
+                    <label for="shapeWidth">Circle Diameter (px):</label>
                     <input type="number" name="shapeWidth" id="shapeWidth" placeholder="Enter diameter" required/>
                 `;
             } else if (shapeType === 'triangle') {
                 shapeOptionsDiv.innerHTML = `
-                    <label for="shapeWidth">Triangle Base (mm):</label>
+                    <label for="shapeWidth">Triangle Base (px):</label>
                     <input type="number" name="shapeWidth" id="shapeWidth" placeholder="Enter base" required/>
                     <br>
-                    <label for="shapeHeight">Triangle Height (mm):</label>
+                    <label for="shapeHeight">Triangle Height (px):</label>
                     <input type="number" name="shapeHeight" id="shapeHeight" placeholder="Enter height" required/>
                 `;
             }
