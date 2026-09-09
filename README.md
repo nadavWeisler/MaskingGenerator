@@ -21,6 +21,7 @@ Sizes in the current UI are **canvas units**, not a research-grade size model. D
 * **No calibrated visual angle.** No viewing-distance, PPI, or display calibration.
 * **Not an experiment runner.** It does not present CFS/RMS trials, time masks at ~10 Hz, or log responses.
 * **Not a first / canonical Mondrian generator.** Earlier bakers exist (see [Related work](#related-work)).
+* **Known limit (triangles).** Rotated triangles can grow a bounding box larger than the declared W×H, so the fit check is incomplete for triangles.
 
 ## Related work
 
