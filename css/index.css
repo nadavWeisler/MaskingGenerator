@@ -60,8 +60,30 @@ select {
     background-color: #0056b3;
 }
 
+.button:disabled,
+.button:disabled:hover {
+    background-color: #9bb7d4;
+    cursor: not-allowed;
+}
+
 .error {
     color: red;
     font-size: 14px;
     margin-top: 5px;
+}
+
+#preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+    max-height: 70vh;
+    overflow: auto;
+}
+
+#preview canvas {
+    max-width: 240px;
+    height: auto;
+    border: 1px solid #ccc;
+    background: #ddd;
 }

@@ -159,14 +159,33 @@ function buildParams(seed, shapeType, frameCount, shapeCount, frameWidthPx, fram
     };
 }
 
+let packedZip = null;
+
 function showParams(params) {
     const readout = document.getElementById('paramsReadout');
-    if (readout) {
-        readout.textContent = JSON.stringify(params, null, 2);
+    if (!readout) {
+        return;
+    }
+    readout.textContent = params ? JSON.stringify(params, null, 2) : '';
+}
+
+function setDownloadEnabled(enabled) {
+    const downloadButton = document.getElementById('downloadZip');
+    if (downloadButton) {
+        downloadButton.disabled = !enabled;
     }
 }
 
-function validateAndGenerate() {
+function clearPreviewAndPack() {
+    const preview = document.getElementById('preview');
+    if (preview) {
+        preview.innerHTML = '';
+    }
+    packedZip = null;
+    setDownloadEnabled(false);
+}
+
+function generateFrames() {
     const form = document.getElementById('shapeForm');
     const errorBox = document.getElementById('errorMessages');
     errorBox.textContent = '';
@@ -200,6 +219,8 @@ function validateAndGenerate() {
 
     if (errors.length) {
         errorBox.textContent = errors.join(' ');
+        clearPreviewAndPack();
+        showParams(null);
         return;
     }
 
@@ -217,7 +238,9 @@ function validateAndGenerate() {
         sizes.shapeHeightPx
     );
     showParams(params);
+    clearPreviewAndPack();
 
+    const preview = document.getElementById('preview');
     const rng = createRng(seed);
     const zip = new JSZip();
     const folder = zip.folder('shapes');
@@ -238,13 +261,21 @@ function validateAndGenerate() {
             sizes.shapeHeightPx,
             rng
         );
+        preview.appendChild(canvas);
         const canvasDataUrl = canvas.toDataURL('image/png');
         folder.file('mask' + j + '.png', canvasDataUrl.split('base64,')[1], { base64: true });
     }
 
     folder.file('params.json', JSON.stringify(params, null, 2));
+    packedZip = zip;
+    setDownloadEnabled(true);
+}
 
-    zip.generateAsync({ type: 'blob' }).then(function (content) {
+function downloadPackedZip() {
+    if (!packedZip) {
+        return;
+    }
+    packedZip.generateAsync({ type: 'blob' }).then(function (content) {
         const downloadLink = document.createElement('a');
         downloadLink.href = URL.createObjectURL(content);
         downloadLink.download = 'shapes.zip';
