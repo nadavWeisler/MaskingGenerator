@@ -159,7 +159,7 @@ function buildParams(seed, shapeType, frameCount, shapeCount, frameWidthPx, fram
     };
 }
 
-let packedZip = null;
+let previewPack = null;
 
 function showParams(params) {
     const readout = document.getElementById('paramsReadout');
@@ -181,8 +181,21 @@ function clearPreviewAndPack() {
     if (preview) {
         preview.innerHTML = '';
     }
-    packedZip = null;
+    previewPack = null;
     setDownloadEnabled(false);
+}
+
+function snapshotPreviewPack(params) {
+    const preview = document.getElementById('preview');
+    const canvases = preview ? preview.querySelectorAll('canvas') : [];
+    const pngs = [];
+    for (let j = 0; j < canvases.length; j++) {
+        pngs.push(canvases[j].toDataURL('image/png').split('base64,')[1]);
+    }
+    previewPack = {
+        pngs: pngs,
+        paramsJson: JSON.stringify(params, null, 2)
+    };
 }
 
 function generateFrames() {
@@ -242,8 +255,6 @@ function generateFrames() {
 
     const preview = document.getElementById('preview');
     const rng = createRng(seed);
-    const zip = new JSZip();
-    const folder = zip.folder('shapes');
 
     for (let j = 0; j < frameCount; j++) {
         const canvas = createShapeCanvas('shapeCanvas' + j, 'shapes', frameWidthPx, frameHeightPx);
@@ -262,20 +273,23 @@ function generateFrames() {
             rng
         );
         preview.appendChild(canvas);
-        const canvasDataUrl = canvas.toDataURL('image/png');
-        folder.file('mask' + j + '.png', canvasDataUrl.split('base64,')[1], { base64: true });
     }
 
-    folder.file('params.json', JSON.stringify(params, null, 2));
-    packedZip = zip;
+    snapshotPreviewPack(params);
     setDownloadEnabled(true);
 }
 
 function downloadPackedZip() {
-    if (!packedZip) {
+    if (!previewPack) {
         return;
     }
-    packedZip.generateAsync({ type: 'blob' }).then(function (content) {
+    const zip = new JSZip();
+    const folder = zip.folder('shapes');
+    for (let j = 0; j < previewPack.pngs.length; j++) {
+        folder.file('mask' + j + '.png', previewPack.pngs[j], { base64: true });
+    }
+    folder.file('params.json', previewPack.paramsJson);
+    zip.generateAsync({ type: 'blob' }).then(function (content) {
         const downloadLink = document.createElement('a');
         downloadLink.href = URL.createObjectURL(content);
         downloadLink.download = 'shapes.zip';
