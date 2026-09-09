@@ -19,13 +19,13 @@ function sampleSeed() {
     return Math.floor(Math.random() * (MAX_SEED + 1));
 }
 
-function randomRange(rng, min, max) {
+function randomInt(rng, min, maxInclusive) {
     const t = rng();
-    const span = max - min;
-    if (!(span > 0)) {
+    if (maxInclusive < min) {
         return min;
     }
-    return min + t * span;
+    const span = maxInclusive - min + 1;
+    return min + Math.min(span - 1, Math.floor(t * span));
 }
 
 function getRandomColor(colors, rng) {
@@ -47,15 +47,15 @@ function drawShapes(shapeType, shapeCount, ctx, colors, frameWidth, frameHeight,
         ctx.fillStyle = getRandomColor(colors, rng);
         switch (shapeType) {
             case 'rectangle': {
-                const rectX = randomRange(rng, 0, frameWidth - shapeWidth);
-                const rectY = randomRange(rng, 0, frameHeight - shapeHeight);
+                const rectX = randomInt(rng, 0, Math.floor(frameWidth - shapeWidth));
+                const rectY = randomInt(rng, 0, Math.floor(frameHeight - shapeHeight));
                 ctx.fillRect(rectX, rectY, shapeWidth, shapeHeight);
                 break;
             }
             case 'circle': {
                 const radius = Math.min(shapeWidth, shapeHeight) / 2;
-                const centerX = randomRange(rng, radius, frameWidth - radius);
-                const centerY = randomRange(rng, radius, frameHeight - radius);
+                const centerX = randomInt(rng, Math.ceil(radius), Math.floor(frameWidth - radius));
+                const centerY = randomInt(rng, Math.ceil(radius), Math.floor(frameHeight - radius));
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
                 ctx.fill();
@@ -69,8 +69,10 @@ function drawShapes(shapeType, shapeCount, ctx, colors, frameWidth, frameHeight,
                 const maxX = Math.max(0, shapeWidth, x3);
                 const minY = Math.min(0, y3);
                 const maxY = Math.max(0, y3);
-                const startX = randomRange(rng, 0, frameWidth - (maxX - minX)) - minX;
-                const startY = randomRange(rng, 0, frameHeight - (maxY - minY)) - minY;
+                const boxW = maxX - minX;
+                const boxH = maxY - minY;
+                const startX = randomInt(rng, 0, Math.floor(frameWidth - boxW)) - minX;
+                const startY = randomInt(rng, 0, Math.floor(frameHeight - boxH)) - minY;
                 ctx.beginPath();
                 ctx.moveTo(startX, startY);
                 ctx.lineTo(startX + shapeWidth, startY);
@@ -174,7 +176,9 @@ function validateAndGenerate() {
     const shapeCount = parsePositiveInt(form.shapeCount.value, 'Number of shapes', errors);
     const frameWidthPx = parsePositiveNumber(form.frameWidth.value, 'Frame width', errors);
     const frameHeightPx = parsePositiveNumber(form.frameHeight.value, 'Frame height', errors);
-    const sizes = readShapeSizes(shapeType, errors);
+    const sizes = shapeType
+        ? readShapeSizes(shapeType, errors)
+        : { shapeWidthPx: NaN, shapeHeightPx: NaN };
     const seedResult = resolveSeed(form.seed.value);
 
     if (seedResult.error) {
