@@ -1,3 +1,5 @@
+Machine-readable metadata is in [`CITATION.cff`](CITATION.cff) and [`.zenodo.json`](.zenodo.json). A DOI is not included yet; Zenodo assigns one after a published GitHub release is archived.
+
 Cite this repository only as a small geometric mask baker. For continuous flash suppression, cite Tsuchiya & Koch (2005). For controlled Mondrian / CFS mask construction and analysis, cite Wang, Alais, Blake, & Han (2022; CFS-crafter). This page is Mondrian-*like* in the geometric sense only; it is not a substitute for those sources and is not a first or canonical browser Mondrian generator.
 
 ```bibtex

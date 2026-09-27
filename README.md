@@ -10,7 +10,7 @@ Live page: https://nadavweisler.github.io/MaskingGenerator/
 
 * Pick one shape type (rectangle, circle, or triangle), a frame count, a shape count, and canvas / shape sizes.
 * Draw each frame by placing that many randomly positioned, randomly colored shapes on a dark-gray background.
-* Download the frames as `shapes.zip` (`mask0.png`, `mask1.png`, …).
+* Download the frames as `shapes.zip` (`mask0.png`, `mask1.png`, …, plus a `params.json` sidecar).
 
 Sizes in the current UI are **canvas units**, not a research-grade size model. Do not treat them as millimetres, screen centimetres, or visual angle.
 
@@ -40,7 +40,7 @@ Sizes in the current UI are **canvas units**, not a research-grade size model. D
 1. Clone the repository, or open the [live page](https://nadavweisler.github.io/MaskingGenerator/).
 2. Open `index.html` in a browser.
 3. Choose shape type, frame count, shape count, and sizes.
-4. Click **Generate & Download**.
+4. Click **Generate**, review the preview, then click **Download ZIP**.
 
 ## Stack
 
@@ -49,3 +49,5 @@ HTML, CSS, JavaScript, jQuery, [JSZip](https://stuk.github.io/jszip/).
 ## License
 
 [MIT](LICENSE). See [`CITATION.md`](CITATION.md) for how to cite this repo versus the primary CFS / CFS-crafter papers.
+
+Machine-readable citation metadata is in [`CITATION.cff`](CITATION.cff) (GitHub) and [`.zenodo.json`](.zenodo.json) (Zenodo). Neither file lists a DOI yet; Zenodo assigns one after a published GitHub release is archived.
