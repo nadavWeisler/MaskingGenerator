@@ -1,0 +1,31 @@
+# DOI: assigned by Zenodo after a published GitHub release is archived.
+# Do not add a doi or identifiers entry until that DOI exists.
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite it using these metadata.
+  Cite this repository only as a small geometric mask baker.
+  For continuous flash suppression, cite Tsuchiya and Koch (2005).
+  For controlled Mondrian / CFS mask construction and analysis, cite
+  Wang, Alais, Blake, and Han (2022; CFS-crafter).
+type: software
+title: "MaskingGenerator: geometric Mondrian-like mask frames for CFS/RMS-style work"
+abstract: >-
+  Browser page that bakes geometric Mondrian-like mask frames
+  (random rectangles, circles, or triangles on a gray canvas) and
+  downloads them as a ZIP of PNGs. Intended as a lightweight baker
+  for CFS / RMS-style work, not as a stimulus-analysis or
+  experiment-presentation tool.
+authors:
+  - family-names: Weisler
+    given-names: Nadav Itzhak
+    orcid: "https://orcid.org/0009-0001-2729-5422"
+    affiliation: "Shalvata Mental Health Center; Data Research Center for Mental Health and Rehabilitation, Clalit; Psychology Department, Hebrew University of Jerusalem"
+repository-code: "https://github.com/nadavWeisler/MaskingGenerator"
+url: "https://nadavweisler.github.io/MaskingGenerator/"
+license: MIT
+version: 0.1.0
+date-released: "2026-09-27"
+keywords:
+  - continuous flash suppression
+  - Mondrian masks
+  - mask generation

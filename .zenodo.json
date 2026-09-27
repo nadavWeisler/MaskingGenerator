@@ -1,0 +1,21 @@
+{
+  "title": "MaskingGenerator: geometric Mondrian-like mask frames for CFS/RMS-style work",
+  "description": "Browser page that bakes geometric Mondrian-like mask frames (random rectangles, circles, or triangles on a gray canvas) and downloads them as a ZIP of PNGs. Intended as a lightweight baker for CFS / RMS-style work, not as a stimulus-analysis or experiment-presentation tool. Cite this software only as that baker. For continuous flash suppression, cite Tsuchiya and Koch (2005; https://doi.org/10.1038/nn1500). For controlled Mondrian / CFS mask construction and analysis, cite Wang, Alais, Blake, and Han (2022; CFS-crafter; https://doi.org/10.3758/s13428-022-01903-7).",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "mit",
+  "version": "0.1.0",
+  "language": "eng",
+  "keywords": [
+    "continuous flash suppression",
+    "Mondrian masks",
+    "mask generation"
+  ],
+  "creators": [
+    {
+      "name": "Weisler, Nadav Itzhak",
+      "orcid": "0009-0001-2729-5422",
+      "affiliation": "Shalvata Mental Health Center; Data Research Center for Mental Health and Rehabilitation, Clalit; Psychology Department, Hebrew University of Jerusalem"
+    }
+  ]
+}
