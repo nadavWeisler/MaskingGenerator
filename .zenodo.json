@@ -17,5 +17,12 @@
       "orcid": "0009-0001-2729-5422",
       "affiliation": "Shalvata Mental Health Center; Data Research Center for Mental Health and Rehabilitation, Clalit; Psychology Department, Hebrew University of Jerusalem"
     }
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/nadavWeisler/MaskingGenerator",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
   ]
 }
