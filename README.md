@@ -1,5 +1,7 @@
 # MaskingGenerator
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22989985.svg)](https://doi.org/10.5281/zenodo.22989985)
+
 Browser page that bakes **geometric Mondrian-*like* mask frames** (random rectangles, circles, or triangles on a gray canvas) and downloads them as a ZIP of PNGs. Intended as a lightweight baker for **CFS / RMS-style** work, not as a stimulus-analysis or experiment-presentation tool.
 
 That “Mondrian-*like*” wording is geometric resemblance only. CFS itself is [Tsuchiya & Koch, 2005](https://doi.org/10.1038/nn1500); controlled mask construction and analysis live in tools such as [CFS-crafter](https://doi.org/10.3758/s13428-022-01903-7) (Wang, Alais, Blake, & Han, 2022). This repo does not replace those sources.
@@ -50,4 +52,4 @@ HTML, CSS, JavaScript, jQuery, [JSZip](https://stuk.github.io/jszip/).
 
 [MIT](LICENSE). See [`CITATION.md`](CITATION.md) for how to cite this repo versus the primary CFS / CFS-crafter papers.
 
-Machine-readable citation metadata is in [`CITATION.cff`](CITATION.cff) (GitHub) and [`.zenodo.json`](.zenodo.json) (Zenodo). Neither file lists a DOI yet; Zenodo assigns one after a published GitHub release is archived.
+Machine-readable citation metadata is in [`CITATION.cff`](CITATION.cff) (GitHub) and [`.zenodo.json`](.zenodo.json) (Zenodo). The Zenodo concept DOI is [10.5281/zenodo.22989985](https://doi.org/10.5281/zenodo.22989985).

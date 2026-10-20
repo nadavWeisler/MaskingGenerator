@@ -1,5 +1,3 @@
-# DOI: assigned by Zenodo after a published GitHub release is archived.
-# Do not add a doi or identifiers entry until that DOI exists.
 cff-version: 1.2.0
 message: >-
   If you use this software, please cite it using these metadata.
@@ -22,6 +20,7 @@ authors:
     affiliation: "Shalvata Mental Health Center; Data Research Center for Mental Health and Rehabilitation, Clalit; Psychology Department, Hebrew University of Jerusalem"
 repository-code: "https://github.com/nadavWeisler/MaskingGenerator"
 url: "https://nadavweisler.github.io/MaskingGenerator/"
+doi: 10.5281/zenodo.22989985
 license: MIT
 version: 0.1.0
 date-released: "2026-09-27"
